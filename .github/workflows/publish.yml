@@ -1,7 +1,10 @@
 on: [push]
 
 jobs:
-  publish:
+  deployment:
+    environment:
+      name: release
+      url: https://gov2.us
     runs-on: ubuntu-latest
     permissions:
       contents: read
