@@ -24,6 +24,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           directory: web
+          gitHubToken: ${{ github.token }}
           projectName: gov2-us
 name: Deploy
 'on':
