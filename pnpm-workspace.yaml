@@ -1,0 +1,9 @@
+---
+packages:
+  - api
+  - app
+  - doc
+  - lib
+  - pkg/*
+  - sql
+  - web

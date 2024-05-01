@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "devDependencies": {
+    "@ptb/eslint-config": "2024.5.1",
+    "@ptb/prettier-config": "2024.5.1",
+    "@ptb/typescript-config": "2024.5.1"
+  },
+  "engines": {
+    "node": "20.12.2",
+    "pnpm": "9.0.6"
+  },
+  "packageManager": "pnpm@9.0.6+sha256.0624e30eff866cdeb363b15061bdb7fd9425b17bc1bb42c22f5f4efdea21f6b3",
+  "private": true,
+  "scripts": {},
+  "type": "module",
+  "workspaces": [
+    "./api",
+    "./app",
+    "./doc",
+    "./lib",
+    "./pkg/*",
+    "./sql",
+    "./web"
+  ]
+}

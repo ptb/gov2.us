@@ -1,0 +1,45 @@
+{
+  "[javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.sortImports": "explicit"
+    },
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnType": false
+  },
+  "[json][jsonc]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.sortJSON": "explicit"
+    },
+    "editor.defaultFormatter": "richie5um2.vscode-sort-json",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "PascalReitermann93.vscode-yaml-sort",
+    "editor.formatOnSave": true
+  },
+  "editor.tabSize": 2,
+  "eslint.debug": false,
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.runtime": "node",
+  "search.exclude": {
+    "**/package-lock.json": true,
+    "**/pnpm-lock.yaml": true,
+    "**/yarn.lock": true
+  },
+  "sortJSON.contextMenu": {
+    "sortJSON": true,
+    "sortJSONAlphaNum": false,
+    "sortJSONAlphaNumReverse": false,
+    "sortJSONKeyLength": false,
+    "sortJSONKeyLengthReverse": false,
+    "sortJSONReverse": false,
+    "sortJSONType": false,
+    "sortJSONTypeReverse": false,
+    "sortJSONValues": false,
+    "sortJSONValuesReverse": false
+  },
+  "typescript.preferences.preferTypeOnlyAutoImports": true
+}
