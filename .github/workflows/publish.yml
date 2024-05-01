@@ -1,7 +1,9 @@
 ---
 jobs:
   publish:
-    environment: ${{ github.ref_name }}
+    environment:
+      name: ${{ github.ref_name }}
+      url: ${{ vars.CLOUDFLARE_PAGES_URL }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
