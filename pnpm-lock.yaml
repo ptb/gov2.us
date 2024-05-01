@@ -21,7 +21,7 @@ importers:
   web:
     devDependencies:
       wrangler:
-        specifier: ^3.53.0
+        specifier: 3.53.0
         version: 3.53.0
 
 packages:
