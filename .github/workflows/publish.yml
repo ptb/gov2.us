@@ -19,6 +19,7 @@ jobs:
         with:
           cache: pnpm
           node-version-file: .node-version
+      - run: pnpm install
       # - run: pnpm build:web
       - uses: ./.github/actions/pages-action
         with:
