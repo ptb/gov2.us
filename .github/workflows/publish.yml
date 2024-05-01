@@ -13,9 +13,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
+          cache: pnpm
           node-version-file: .node-version
       - uses: pnpm/action-setup@v3
-      - uses: cloudflare/pages-action@v1
+        with:
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
+            - args: [--global, typescript, wrangler]
+      # - run: pnpm build:web
+      - uses: ./.github/actions/pages-action
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
