@@ -19,13 +19,13 @@ jobs:
       - run: pnpm install
       # - run: pnpm build:web
       - run: pnpm install -g wrangler
-      - uses: ./.github/actions/pages-action
+      - uses: ./pkg/cf-pages-action
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           directory: web
           projectName: gov2-us
-name: Publish
+name: Deploy
 'on':
   push:
     branches:
