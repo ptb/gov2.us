@@ -1,3 +1,6 @@
+import path from "node:path"
+import { env } from "process"
+
 import {
   getInput,
   setFailed,
@@ -6,9 +9,7 @@ import {
 } from "@actions/core"
 import { context, getOctokit } from "@actions/github"
 import type { Deployment, Project } from "@cloudflare/types"
-import path from "node:path"
-import { env } from "process"
-import shellac from "shellac"
+import { default as shellac } from "shellac"
 import { fetch } from "undici"
 
 type Octokit = ReturnType<typeof getOctokit>
@@ -29,11 +30,13 @@ try {
       `https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}`,
       { headers: { Authorization: `Bearer ${apiToken}` } }
     )
+
     if (response.status !== 200) {
       console.error(
         `Cloudflare API returned non-200: ${response.status}`
       )
       const json = await response.text()
+
       console.error(`API returned: ${json}`)
       throw new Error(
         "Failed to get Pages project, API returned non-200"
@@ -43,6 +46,7 @@ try {
     const { result } = (await response.json()) as {
       result: Project | null
     }
+
     if (result === null) {
       throw new Error(
         "Failed to get Pages project, project does not exist. Check the project name or create it!"
@@ -74,7 +78,8 @@ try {
     return deployment
   }
 
-  const githubBranch = env.GITHUB_HEAD_REF || env.GITHUB_REF_NAME
+  const githubBranch =
+    env["GITHUB_HEAD_REF"] ?? env["GITHUB_REF_NAME"]
 
   const createGitHubDeployment = async (
     octokit: Octokit,
@@ -82,14 +87,14 @@ try {
     environment: string
   ) => {
     const deployment = await octokit.rest.repos.createDeployment({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      ref: githubBranch || context.ref,
       auto_merge: false,
       description: "Cloudflare Pages",
-      required_contexts: [],
       environment,
-      production_environment: productionEnvironment
+      owner: context.repo.owner,
+      production_environment: productionEnvironment,
+      ref: githubBranch ?? context.ref,
+      repo: context.repo.repo,
+      required_contexts: []
     })
 
     if (deployment.status === 201) {
@@ -98,47 +103,47 @@ try {
   }
 
   const createGitHubDeploymentStatus = async ({
-    id,
-    url,
     deploymentId,
     environmentName,
+    id,
+    octokit,
     productionEnvironment,
-    octokit
+    url
   }: {
-    octokit: Octokit
-    id: number
-    url: string
     deploymentId: string
     environmentName: string
+    id: number
+    octokit: Octokit
     productionEnvironment: boolean
+    url: string
   }) => {
     await octokit.rest.repos.createDeploymentStatus({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
+      auto_inactive: false,
       deployment_id: id,
-      // @ts-ignore
+      description: "Cloudflare Pages",
       environment: environmentName,
       environment_url: url,
-      production_environment: productionEnvironment,
       log_url: `https://dash.cloudflare.com/${accountId}/pages/view/${projectName}/${deploymentId}`,
-      description: "Cloudflare Pages",
-      state: "success",
-      auto_inactive: false
+      owner: context.repo.owner,
+      production_environment: productionEnvironment,
+      repo: context.repo.repo,
+      state: "success"
     })
   }
 
   const createJobSummary = async ({
-    deployment,
-    aliasUrl
+    aliasUrl,
+    deployment
   }: {
-    deployment: Deployment
     aliasUrl: string
+    deployment: Deployment
   }) => {
     const deployStage = deployment.stages.find(
       (stage) => stage.name === "deploy"
     )
 
     let status = "⚡️  Deployment in progress..."
+
     if (deployStage?.status === "success") {
       status = "✅  Deploy successful!"
     } else if (deployStage?.status === "failure") {
@@ -173,8 +178,9 @@ try {
       ReturnType<typeof createGitHubDeployment>
     >
 
-    if (gitHubToken && gitHubToken.length) {
+    if (gitHubToken.length) {
       const octokit = getOctokit(gitHubToken)
+
       gitHubDeployment = await createGitHubDeployment(
         octokit,
         productionEnvironment,
@@ -183,14 +189,16 @@ try {
     }
 
     const pagesDeployment = await createPagesDeployment()
-    setOutput("id", pagesDeployment.id)
-    setOutput("url", pagesDeployment.url)
-    setOutput("environment", pagesDeployment.environment)
 
-    let alias = pagesDeployment.url
+    setOutput("id", pagesDeployment?.id)
+    setOutput("url", pagesDeployment?.url)
+    setOutput("environment", pagesDeployment?.environment)
+
+    let alias = pagesDeployment?.url
+
     if (
       !productionEnvironment &&
-      pagesDeployment.aliases &&
+      pagesDeployment?.aliases &&
       pagesDeployment.aliases.length > 0
     ) {
       alias = pagesDeployment.aliases[0]
@@ -198,20 +206,20 @@ try {
     setOutput("alias", alias)
 
     await createJobSummary({
-      deployment: pagesDeployment,
-      aliasUrl: alias
+      aliasUrl: alias,
+      deployment: pagesDeployment
     })
 
     if (gitHubDeployment) {
       const octokit = getOctokit(gitHubToken)
 
       await createGitHubDeploymentStatus({
-        id: gitHubDeployment.id,
-        url: pagesDeployment.url,
-        deploymentId: pagesDeployment.id,
+        deploymentId: pagesDeployment?.id,
         environmentName,
+        id: gitHubDeployment.id,
+        octokit,
         productionEnvironment,
-        octokit
+        url: pagesDeployment?.url
       })
     }
   })()
