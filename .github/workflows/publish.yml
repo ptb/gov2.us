@@ -18,6 +18,7 @@ jobs:
           node-version-file: .node-version
       - run: pnpm install
       # - run: pnpm build:web
+      - run: pnpm install -g wrangler
       - uses: ./.github/actions/pages-action
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
