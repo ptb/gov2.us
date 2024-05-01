@@ -3,7 +3,7 @@ jobs:
   deploy:
     environment:
       name: ${{ github.ref_name }}
-      url: ${{ vars.CLOUDFLARE_PAGES_URL }}
+      url: ${{ steps.deploy.outputs.url }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
