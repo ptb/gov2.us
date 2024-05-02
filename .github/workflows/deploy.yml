@@ -33,7 +33,7 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            core.notice(JSON.stringify(${{ steps.metrics.outputs.links }}))
+            core.summary.addList(Object.entries(${{ steps.metrics.outputs.links }}).map(([url, report]) => core.summary.addLink(url, report))
 name: Deploy
 'on':
   push:
