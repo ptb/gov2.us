@@ -18,7 +18,8 @@ jobs:
           node-version-file: .node-version
       - run: pnpm i && pnpm i -g wrangler
       - run: pnpm build:web
-      - uses: ptb/cf-pages-action@v1.6.0
+      - id: deploy
+        uses: ptb/cf-pages-action@v1.6.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
