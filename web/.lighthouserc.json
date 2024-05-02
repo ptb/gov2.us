@@ -4,7 +4,7 @@
       "preset": "lighthouse:no-pwa"
     },
     "collect": {
-      "staticDistDir": "../www"
+      "staticDistDir": "./www"
     }
   }
 }
