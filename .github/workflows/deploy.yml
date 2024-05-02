@@ -17,7 +17,7 @@ jobs:
           cache: pnpm
           node-version-file: .node-version
       - run: pnpm i && pnpm i -g wrangler
-      # - run: pnpm build:web
+      - run: pnpm build:web
       - id: publish
         uses: ptb/cf-pages-action@v1.6.0
         with:
