@@ -27,6 +27,7 @@ jobs:
       - id: metrics
         uses: treosh/lighthouse-ci-action@v11
         with:
+          runs: 2
           temporaryPublicStorage: true
           urls: ${{ steps.publish.outputs.url }}
       - uses: actions/github-script@v7
