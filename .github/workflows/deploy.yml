@@ -3,7 +3,7 @@ jobs:
   deploy:
     environment:
       name: ${{ github.ref_name }}
-      url: ${{ steps.deploy.outputs.url }}
+      url: ${{ steps.publish.outputs.url }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
@@ -16,16 +16,16 @@ jobs:
         with:
           cache: pnpm
           node-version-file: .node-version
-      - run: pnpm install
+      - run: pnpm i && pnpm i -g wrangler
       # - run: pnpm build:web
-      - run: pnpm install -g wrangler
-      - uses: ptb/cf-pages-action@v1.6.0
+      - id: publish
+        uses: ptb/cf-pages-action@v1.6.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          directory: web
+          directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
-          projectName: gov2-us
+          projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
 name: Deploy
 'on':
   push:
