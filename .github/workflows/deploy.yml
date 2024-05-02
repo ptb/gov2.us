@@ -3,7 +3,7 @@ jobs:
   deploy:
     environment:
       name: ${{ github.ref_name }}
-      url: ${{ steps.publish.outputs.url }}
+      url: ${{ steps.deploy.outputs.url }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
@@ -18,8 +18,7 @@ jobs:
           node-version-file: .node-version
       - run: pnpm i && pnpm i -g wrangler
       - run: pnpm build:web
-      - id: publish
-        uses: ptb/cf-pages-action@v1.6.0
+      - uses: ptb/cf-pages-action@v1.6.0
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
