@@ -25,6 +25,12 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+      - uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: ./web/.lighthouserc.json
+          uploadArtifacts: true
+          urls: |
+            ${{ steps.deploy.outputs.url }}
 name: Deploy
 'on':
   push:
