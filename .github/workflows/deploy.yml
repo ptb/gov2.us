@@ -33,7 +33,7 @@ jobs:
         with:
           script: |
             Object.entries(${{ steps.metrics.outputs.links }})
-              .map(([url, report]) => core.summary.addLink(url, report))
+              .map(([url, report]) => core.summary.addLink(report, url))
             core.summary.write()
 name: Deploy
 'on':
