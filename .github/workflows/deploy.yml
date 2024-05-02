@@ -3,7 +3,6 @@ jobs:
   deploy:
     environment:
       name: ${{ github.ref_name }}
-      # url: ${{ env.CLOUDFLARE_PROJECT_URL }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
@@ -16,8 +15,7 @@ jobs:
         with:
           cache: pnpm
           node-version-file: .node-version
-      - run: pnpm i && pnpm i -g wrangler
-      - run: pnpm build:web
+      - run: pnpm i && pnpm i -g wrangler && pnpm build:web
       - id: publish
         uses: ptb/cf-pages-action@v1.6.0
         with:
@@ -26,11 +24,16 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-      - run: echo "{CLOUDFLARE_PROJECT_URL}=${{ steps.publish.outputs.url }}" >> "$GITHUB_ENV"
-      - uses: treosh/lighthouse-ci-action@v11
+      - id: metrics
+        uses: treosh/lighthouse-ci-action@v11
         with:
+          runs: 3
           temporaryPublicStorage: true
           urls: ${{ steps.publish.outputs.url }}
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            core.info(JSON.stringify(${{ steps.metrics.outputs.links }}))
 name: Deploy
 'on':
   push:
