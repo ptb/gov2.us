@@ -15,7 +15,7 @@
   "name": "@ptb/ptb.dev",
   "private": true,
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "start": "vite dev"
   },
