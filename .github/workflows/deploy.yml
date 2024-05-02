@@ -3,7 +3,7 @@ jobs:
   deploy:
     environment:
       name: ${{ github.ref_name }}
-      url: ${{ job.deploy.outputs.url }}
+      url: ${{ env.CLOUDFLARE_PROJECT_URL }}
     name: Publish to Cloudflare Pages
     permissions:
       contents: read
@@ -26,6 +26,7 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+      - run: echo "{CLOUDFLARE_PROJECT_URL}=${{ steps.publish.outputs.url }}" >> "$GITHUB_ENV"
       - uses: treosh/lighthouse-ci-action@v11
         with:
           temporaryPublicStorage: true
