@@ -33,7 +33,7 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const tableData = Object.entries(${{ steps.metrics.outputs.links }}).reduce(data, ([url, report]) => data.concat([{ data: url }, { data: report }]), [{ data: "URL", header: true }, { data: "Report", header: true }])
+            const tableData = Object.entries(${{ steps.metrics.outputs.links }}).reduce((data, [url, report]) => data.concat([{ data: url }, { data: report }]), [{ data: "URL", header: true }, { data: "Report", header: true }])
             core.summary.addTable([tableData])
             core.summary.write()
 name: Deploy
