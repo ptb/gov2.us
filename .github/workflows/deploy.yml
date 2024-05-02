@@ -28,7 +28,6 @@ jobs:
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
       - uses: treosh/lighthouse-ci-action@v11
         with:
-          configPath: ./web/.lighthouserc.json
           uploadArtifacts: true
           urls: |
             ${{ steps.publish.outputs.url }}
