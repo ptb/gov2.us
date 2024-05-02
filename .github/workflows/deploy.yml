@@ -27,16 +27,14 @@ jobs:
       - id: metrics
         uses: treosh/lighthouse-ci-action@v11
         with:
-          runs: 2
+          runs: 3
           temporaryPublicStorage: true
           urls: ${{ steps.publish.outputs.url }}
       - uses: actions/github-script@v7
         with:
           script: |
-            Object.entries(${{ steps.metrics.outputs.links }})
-              .forEach(([url, report]) =>
-                core.summary.addRaw(`- [${url}](${report})`)
-              )
+            const tableData = Object.entries(${{ steps.metrics.outputs.links }}).reduce(data, ([url, report]) => data.concat([{ data: url }, { data: report }]), [{ data: "URL", header: true }, { data: "Report", header: true }])
+            core.summary.addTable([tableData])
             core.summary.write()
 name: Deploy
 'on':
