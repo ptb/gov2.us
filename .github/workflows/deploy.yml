@@ -36,7 +36,6 @@ jobs:
           temporaryPublicStorage: true
           urls: |
             ${{ steps.publish.outputs.url }}
-name: Deploy
 'on':
   push:
     branches:
