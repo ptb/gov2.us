@@ -26,8 +26,16 @@ export default defineConfig({
         },
         chunkFileNames: "js/[name]-[hash].js",
         entryFileNames: "js/[name]-[hash].js",
-        manualChunks: (id) =>
-          id.includes("node_modules") ? "share" : undefined
+        manualChunks: (id) => {
+          switch (true) {
+            case /(react(-dom)?|scheduler)@/.test(id):
+              return "react"
+            case id.includes("node_modules"):
+              return "share"
+            default:
+              return "index"
+          }
+        }
       }
     }
   },
