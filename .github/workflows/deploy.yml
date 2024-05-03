@@ -43,7 +43,6 @@ jobs:
         id: metrics
         uses: treosh/lighthouse-ci-action@v11
         with:
-          configPath: ./web/.lighthouserc.json
           runs: 1
           temporaryPublicStorage: true
           urls: |
