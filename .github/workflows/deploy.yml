@@ -35,7 +35,7 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-      - uses: cygnetdigital/wait_for_response@v2.0.0
+      - uses: mydea/action-wait-for-api@v1
         with:
           url: ${{ steps.publish.outputs.url }}
       - env:
@@ -43,7 +43,8 @@ jobs:
         id: metrics
         uses: treosh/lighthouse-ci-action@v11
         with:
-          runs: 3
+          configPath: ./web/.lighthouserc.json
+          runs: 1
           temporaryPublicStorage: true
           urls: |
             ${{ steps.publish.outputs.url }}
