@@ -26,7 +26,7 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-      - uses: mydea/action-wait-for-api@v1
+      - uses: mydea/action-wait-for-api@main
         with:
           url: ${{ steps.publish.outputs.url }}
       - env:
