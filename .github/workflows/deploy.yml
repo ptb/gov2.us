@@ -17,6 +17,15 @@ jobs:
         with:
           cache: pnpm
           node-version-file: .node-version
+      - id: cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+        shell: bash
+      - uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.cache.outputs.STORE_PATH }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       - run: pnpm add -g wrangler && pnpm i && pnpm build:web
       - id: publish
         uses: ptb/cf-pages-action@v1.6.0
@@ -26,7 +35,7 @@ jobs:
           directory: ${{ vars.CLOUDFLARE_DIRECTORY }}
           environmentName: ${{ github.ref_name }}
           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-      - uses: nev7n/wait_for_response@v1
+      - uses: cygnetdigital/wait_for_response@v2.0.0
         with:
           url: ${{ steps.publish.outputs.url }}
       - env:

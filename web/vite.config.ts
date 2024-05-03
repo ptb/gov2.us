@@ -1,6 +1,5 @@
 import { default as reactPlugin } from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-import { VitePWA as pwaPlugin } from "vite-plugin-pwa"
 import { default as tsPathsPlugin } from "vite-tsconfig-paths"
 
 export default defineConfig({
@@ -40,5 +39,5 @@ export default defineConfig({
       }
     }
   },
-  plugins: [tsPathsPlugin(), reactPlugin(), pwaPlugin()]
+  plugins: [tsPathsPlugin(), reactPlugin()]
 })
