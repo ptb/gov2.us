@@ -29,17 +29,12 @@ jobs:
           url: ${{ steps.publish.outputs.url }}
       - env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-        id: metrics
         uses: treosh/lighthouse-ci-action@v11
         with:
-          runs: 1
           temporaryPublicStorage: true
           urls: |
             ${{ steps.publish.outputs.url }}
+name: Deploy
 'on':
   push:
-    branches:
-      - develop
-      - testing
-      - preview
-      - release
+    branches: [develop, testing, preview, release]
